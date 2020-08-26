@@ -6,7 +6,7 @@ import io.swagger.models.properties.*;
 import java.util.*;
 import java.io.File;
 
-public class RubyrbiclientcodegenGenerator extends DefaultCodegen implements CodegenConfig {
+public class RubyRbiClientCodegen extends RubyClientCodegen {
 
   // source folder where to write the files
   protected String sourceFolder = "src";
@@ -29,7 +29,7 @@ public class RubyrbiclientcodegenGenerator extends DefaultCodegen implements Cod
    * @return the friendly name for the generator
    */
   public String getName() {
-    return "RubyRbiClientCodegen";
+    return "RubyRbiClient";
   }
 
   /**
@@ -39,14 +39,14 @@ public class RubyrbiclientcodegenGenerator extends DefaultCodegen implements Cod
    * @return A string value for the help message
    */
   public String getHelp() {
-    return "Generates a RubyRbiClientCodegen client library.";
+    return "Generates a RubyRbiClient client library.";
   }
 
   public RubyrbiclientcodegenGenerator() {
     super();
 
     // set the output folder here
-    outputFolder = "generated-code/RubyRbiClientCodegen";
+    outputFolder = "generated-code/RubyRbiClient";
 
     /**
      * Models.  You can write model files using the modelTemplateFiles map.

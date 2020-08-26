@@ -21,7 +21,7 @@ At this point, you've likely generated a client setup.  It will include somethin
 |-- src
 |--- main
 |---- java
-|----- com.wealthsimple.codegen.RubyrbiclientcodegenGenerator.java // generator file
+|----- com.wealthsimple.codegen.RubyRbiClientCodegen.java // generator file
 |---- resources
 |----- RubyRbiClientCodegen // template files
 |----- META-INF
@@ -31,7 +31,7 @@ At this point, you've likely generated a client setup.  It will include somethin
 
 You _will_ need to make changes in at least the following:
 
-`RubyrbiclientcodegenGenerator.java`
+`RubyRbiClientCodegen.java`
 
 Templates in this folder:
 
@@ -52,8 +52,8 @@ java -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.C
 Now your templates are available to the client generator and you can write output values
 
 ## But how do I modify this?
-The `RubyrbiclientcodegenGenerator.java` has comments in it--lots of comments.  There is no good substitute
-for reading the code more, though.  See how the `RubyrbiclientcodegenGenerator` implements `CodegenConfig`.
+The `RubyRbiClientCodegen.java` has comments in it--lots of comments.  There is no good substitute
+for reading the code more, though.  See how the `RubyRbiClientCodegen` implements `CodegenConfig`.
 That class has the signature of all values that can be overridden.
 
 For the templates themselves, you have a number of values available to you for generation.
