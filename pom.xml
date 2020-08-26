@@ -108,7 +108,7 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>io.swagger</groupId>
+            <groupId>io.swagger.codegen.v3</groupId>
             <artifactId>swagger-codegen</artifactId>
             <version>${swagger-codegen-version}</version>
             <scope>provided</scope>
@@ -116,7 +116,7 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <swagger-codegen-version>2.4.16-SNAPSHOT</swagger-codegen-version>
+        <swagger-codegen-version>3.0.20</swagger-codegen-version>
         <maven-plugin-version>1.0.0</maven-plugin-version>
         <junit-version>4.8.1</junit-version>
     </properties>
