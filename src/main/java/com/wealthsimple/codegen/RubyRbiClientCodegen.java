@@ -16,6 +16,7 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
 
     embeddedTemplateDir = templateDir = "RubyRbiClient";
     modelTemplateFiles.put("model_rbi.mustache", ".rbi");
+    apiTemplateFiles.put("api_rbi.mustache", ".rbi");
   }
 
   /**
@@ -36,17 +37,35 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
     supportingFiles.add(new SupportingFile("api_error_rbi.mustache", rbiFolder, "api_error.rbi"));
   }
 
-  public String rbiFileFolder() {
-    return outputFolder + File.separator + rbiFolder + File.separator + gemName + File.separator + modelPackage.replace("/", File.separator);
+  public String rbiClientFileFolder() {
+    return outputFolder + File.separator + rbiFolder + File.separator + gemName;
+  }
+
+  public String modelRbiFileFolder() {
+    return rbiClientFileFolder() + File.separator + modelPackage().replace("/", File.separator);
+  }
+
+  public String apiRbiFileFolder() {
+    return rbiClientFileFolder() + File.separator + apiPackage().replace("/", File.separator);
   }
 
   @Override
   public String modelFilename(String templateName, String modelName) {
     String suffix = modelTemplateFiles().get(templateName);
     if (suffix.equals(typeFormat)) {
-      return rbiFileFolder() + File.separator + toModelFilename(modelName) + suffix;
+      return modelRbiFileFolder() + File.separator + toModelFilename(modelName) + suffix;
     } else {
       return super.modelFilename(templateName, modelName);
+    }
+  }
+
+  @Override
+  public String apiFilename(String templateName, String tag) {
+    String suffix = apiTemplateFiles().get(templateName);
+    if (suffix.equals(typeFormat)) {
+      return apiRbiFileFolder() + File.separator + toApiFilename(tag) + suffix;
+    } else {
+      return super.apiFilename(templateName, tag);
     }
   }
 }
