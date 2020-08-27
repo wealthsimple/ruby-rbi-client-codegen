@@ -9,11 +9,13 @@ import java.io.File;
 
 public class RubyRbiClientCodegen extends RubyClientCodegen {
   protected String rbiFolder = "rbi";
+  protected String typeFormat = ".rbi";
 
   public RubyRbiClientCodegen() {
     super();
 
     embeddedTemplateDir = templateDir = "RubyRbiClient";
+    modelTemplateFiles.put("model_rbi.mustache", ".rbi");
   }
 
   /**
@@ -32,5 +34,19 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
     super.processOpts();
 
     supportingFiles.add(new SupportingFile("api_error_rbi.mustache", rbiFolder, "api_error.rbi"));
+  }
+
+  public String rbiFileFolder() {
+    return outputFolder + File.separator + rbiFolder + File.separator + gemName + File.separator + modelPackage.replace("/", File.separator);
+  }
+
+  @Override
+  public String modelFilename(String templateName, String modelName) {
+    String suffix = modelTemplateFiles().get(templateName);
+    if (suffix.equals(typeFormat)) {
+      return rbiFileFolder() + File.separator + toModelFilename(modelName) + suffix;
+    } else {
+      return super.modelFilename(templateName, modelName);
+    }
   }
 }
