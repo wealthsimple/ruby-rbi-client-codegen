@@ -9,7 +9,7 @@ module {{moduleName}}
     sig { returns(Integer) }
     def code; end
 
-    sig { returns(Hash) }
+    sig { returns(T::Hash[T.untyped, T.untyped]) }
     def response_headers; end
 
     sig { returns(String) }
