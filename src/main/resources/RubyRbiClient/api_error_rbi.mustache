@@ -1,0 +1,20 @@
+module {{moduleName}}
+  class ApiError < StandardError
+    sig { returns(Integer) }
+    def code; end
+
+    sig { returns(Hash) }
+    def response_headers; end
+
+    sig { returns(String) }
+    def response_body; end
+
+    # Usage examples:
+    #   ApiError.new
+    #   ApiError.new("message")
+    #   ApiError.new(:code => 500, :response_headers => {}, :response_body => "")
+    #   ApiError.new(:code => 404, :message => "Not Found")
+    sig { params(arg: T.any(String, {code: Integer, response_headers: Hash, response_body: String})).void }
+    def initialize(arg = nil); end
+  end
+end
