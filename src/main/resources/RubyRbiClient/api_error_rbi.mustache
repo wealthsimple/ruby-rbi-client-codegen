@@ -14,7 +14,7 @@ module {{moduleName}}
     #   ApiError.new("message")
     #   ApiError.new(:code => 500, :response_headers => {}, :response_body => "")
     #   ApiError.new(:code => 404, :message => "Not Found")
-    sig { params(arg: T.any(String, {code: Integer, response_headers: Hash, response_body: String})).void }
+    sig { params(arg: T.nilable(T.any(String, T::Hash[Symbol, BasicObject]))).void }
     def initialize(arg = nil); end
   end
 end
