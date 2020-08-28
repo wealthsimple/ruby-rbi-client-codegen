@@ -10,15 +10,27 @@ module {{moduleName}}
   class Configuration
     # Defines url scheme
     sig { returns(String) }
-    attr_accessor :scheme
+    def scheme; end
+
+    # Sets the url scheme
+    sig { params(arg0: String).returns(String) }
+    def scheme=(arg0); end
 
     # Defines url host
     sig { returns(String) }
-    attr_accessor :host
+    def host; end
 
-    # Defines url base path
+    # Sets the url host
+    sig { params(arg0: String).returns(String) }
+    def host=(arg0); end
+
+    # Defines base path
     sig { returns(String) }
-    attr_accessor :base_path
+    def base_path; end
+
+    # Sets the base path
+    sig { params(arg0: String).returns(String) }
+    def base_path=(arg0); end
 
     # Defines API keys used with API Key authentications.
     #
@@ -27,7 +39,11 @@ module {{moduleName}}
     # @example parameter name is "api_key", API key is "xxx" (e.g. "api_key=xxx" in query string)
     #   config.api_key['api_key'] = 'xxx'
     sig { returns(T::Hash[String, String]) }
-    attr_accessor :api_key
+    def api_key; end
+
+    # Sets the api_key
+    sig { params(arg0: T::Hash[String, String]).returns(T::Hash[String, String]) }
+    def api_key=(arg0); end
 
     # Defines API key prefixes used with API Key authentications.
     #
@@ -36,23 +52,37 @@ module {{moduleName}}
     # @example parameter name is "Authorization", API key prefix is "Token" (e.g. "Authorization: Token xxx" in headers)
     #   config.api_key_prefix['api_key'] = 'Token'
     sig { returns(T::Hash[String, String]) }
-    attr_accessor :api_key_prefix
+    def api_key_prefix; end
+
+    # Sets the api_key_prefix
+    sig { params(arg0: T::Hash[String, String]).returns(T::Hash[String, String]) }
+    def api_key_prefix=(arg0); end
 
     # Defines the username used with HTTP basic authentication.
     #
     # @return [String]
     sig { returns(String) }
-    attr_accessor :username
+    def username; end
+
+    sig { params(arg0: String).returns(String) }
+    def username=(arg0); end
+
 
     # Defines the password used with HTTP basic authentication.
     #
     # @return [String]
     sig { returns(String) }
-    attr_accessor :password
+    def password; end
+
+    sig { params(arg0: String).returns(String) }
+    def password=(arg0); end
 
     # Defines the access token (Bearer) used with OAuth2.
     sig { returns(String) }
-    attr_accessor :access_token
+    def access_token; end
+
+    sig { params(arg0: String).returns(String) }
+    def access_token=(arg0); end
 
     # Set this to enable/disable debugging. When enabled (set to true), HTTP request/response
     # details will be logged with `logger.debug` (see the `logger` attribute).
@@ -60,13 +90,18 @@ module {{moduleName}}
     #
     # @return [true, false]
     sig { returns(T::Boolean) }
-    attr_accessor :debugging
+    def debugging; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def debugging=(arg0); end
 
     # Defines the logger used for debugging.
     # Default to `Rails.logger` (when in Rails) or logging to STDOUT.
     #
     # @return [#debug]
-    attr_accessor :logger
+    def logger; end
+
+    def logger=(arg0); end
 
     # Defines the temporary folder to store downloaded files
     # (for API endpoints that have file response).
@@ -74,18 +109,27 @@ module {{moduleName}}
     #
     # @return [String]
     sig { returns(String) }
-    attr_accessor :temp_folder_path
+    def temp_folder_path; end
+
+    sig { params(arg0: String).returns(String) }
+    def temp_folder_path=(arg0); end
 
     # The time limit for HTTP request in seconds.
     # Default to 0 (never times out).
     sig { returns(Integer) }
-    attr_accessor :timeout
+    def timeout; end
+
+    sig { params(arg0: Integer).returns(Integer) }
+    def timeout=(arg0); end
 
     # Set this to false to skip client side validation in the operation.
     # Default to true.
     # @return [true, false]
     sig { returns(T::Boolean) }
-    attr_accessor :client_side_validation
+    def client_side_validation; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def client_side_validation=(arg0); end
 
     ### TLS/SSL setting
     # Set this to false to skip verifying SSL certificate when calling API from https server.
@@ -95,7 +139,10 @@ module {{moduleName}}
     #
     # @return [true, false]
     sig { returns(T::Boolean) }
-    attr_accessor :verify_ssl
+    def verify_ssl; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def verify_ssl=(arg0); end
 
     ### TLS/SSL setting
     # Set this to false to skip verifying SSL host name
@@ -105,7 +152,10 @@ module {{moduleName}}
     #
     # @return [true, false]
     sig { returns(T::Boolean) }
-    attr_accessor :verify_ssl_host
+    def verify_ssl_host; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def verify_ssl_host=(arg0); end
 
     ### TLS/SSL setting
     # Set this to customize the certificate file to verify the peer.
@@ -115,26 +165,39 @@ module {{moduleName}}
     # @see The `cainfo` option of Typhoeus, `--cert` option of libcurl. Related source code:
     # https://github.com/typhoeus/typhoeus/blob/master/lib/typhoeus/easy_factory.rb#L145
     sig { returns(String) }
-    attr_accessor :ssl_ca_cert
+    def ssl_ca_cert; end
+
+    sig { params(arg0: String).returns(String) }
+    def ssl_ca_cert=(arg0); end
 
     ### TLS/SSL setting
     # Client certificate file (for client certificate)
-    attr_accessor :cert_file
+    def cert_file; end
+
+    def cert_file=(arg0); end
 
     ### TLS/SSL setting
     # Client private key file (for client certificate)
-    attr_accessor :key_file
+    def key_file; end
+
+    def key_file=(arg0); end
 
     # Set this to customize parameters encoding of array parameter with multi collectionFormat.
     # Default to nil.
     #
     # @see The params_encoding option of Ethon. Related source code:
     # https://github.com/typhoeus/ethon/blob/master/lib/ethon/easy/queryable.rb#L96
-    attr_accessor :params_encoding
+    def params_encoding; end
 
-    attr_accessor :inject_format
+    def params_encoding=(arg0); end
 
-    attr_accessor :force_ending_format
+    def inject_format; end
+
+    def inject_format=(arg0); end
+
+    def force_ending_format; end
+
+    def force_ending_format=(arg0); end
 
     sig { void }
     def initialize
