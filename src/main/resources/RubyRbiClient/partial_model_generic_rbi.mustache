@@ -2,5 +2,16 @@
   # {{{description}}}
   {{/description}}
   class {{classname}}
+  {{#vars}}
+    {{#description}}
+    # {{{description}}}
+    {{/description}}
+    sig{ returns({{{rbiDataType}}}) }
+    def {{{name}}}; end
+
+    sig { params({{{rbiDataType}}}).returns({{{rbiDataType}}}) }
+    def {{{name}}}=(arg0); end
+
+  {{/vars}}
 {{> base_object_rbi}}
   end
