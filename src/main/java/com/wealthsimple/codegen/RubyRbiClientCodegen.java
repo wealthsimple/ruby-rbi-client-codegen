@@ -83,7 +83,7 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
     } else if (p instanceof MapProperty) {
       MapProperty mp = (MapProperty) p;
       Property inner = mp.getAdditionalProperties();
-      return "T::Hash<String, " + getRbiTypeDeclaration(inner) + "]";
+      return "T::Hash[String, " + getRbiTypeDeclaration(inner) + "]";
     } else if (p instanceof BooleanProperty) {
       return "T::Boolean";
     } else if (p instanceof ObjectProperty) {
