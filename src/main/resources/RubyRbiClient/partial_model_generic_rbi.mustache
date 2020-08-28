@@ -9,9 +9,32 @@
     sig{ returns({{{rbiDataType}}}) }
     def {{{name}}}; end
 
-    sig { params({{{rbiDataType}}}).returns({{{rbiDataType}}}) }
+    sig { params(arg0: {{{rbiDataType}}}).returns({{{rbiDataType}}}) }
     def {{{name}}}=(arg0); end
 
   {{/vars}}
+  {{#hasEnums}}
+    class EnumAttributeValidator
+      sig { returns(String) }
+      def datatype; end
+
+      sig { params(arg0: String).returns(String) }
+      def datatype=(arg0); end
+
+      sig { returns(T::Array[BasicObject]) }
+      def allowable_values; end
+
+      sig { params(arg0: T::Array[BasicObject]).returns(T::Array[BasicObject]) }
+      def allowable_values=(arg0); end
+
+      sig { params(datatype: String, allowable_values: T::Array[BasicObject]).void }
+      def initialize(datatype, allowable_values); end
+
+      sig { params(value: T.nilable(BasicObject)).returns(T::Boolean) }
+      def valid?(value); end
+    end
+
+{{/hasEnums}}
+
 {{> base_object_rbi}}
   end
