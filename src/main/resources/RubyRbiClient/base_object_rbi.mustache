@@ -1,7 +1,7 @@
     # Builds the object from hash
     # @param [Hash] attributes Model attributes in the form of hash
     # @return [Object] Returns the model itself
-    sig {params(attributes: T::Hash[Symbol, untyped]).returns(T.self_type)}
+    sig {params(attributes: T::Hash[Symbol, T.untyped]).returns(T.self_type)}
     def build_from_hash(attributes); end
 
     # Deserializes the data based on type
@@ -30,5 +30,5 @@
     # For object, use to_hash. Otherwise, just return the value
     # @param [Object] value Any valid value
     # @return [Hash] Returns the value in the form of hash
-    sig { params(value: BasicObject).returns(T::Hash[untyped, untyped]) }
+    sig { params(value: BasicObject).returns(T::Hash[T.untyped, T.untyped]) }
     def _to_hash(value); end
