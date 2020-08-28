@@ -1,0 +1,228 @@
+# typed: strong
+
+=begin
+{{> api_info}}
+=end
+
+require 'uri'
+
+module {{moduleName}}
+  class Configuration
+    # Defines url scheme
+    sig { returns(String) }
+    def scheme; end
+
+    # Sets the url scheme
+    sig { params(arg0: String).returns(String) }
+    def scheme=(arg0); end
+
+    # Defines url host
+    sig { returns(String) }
+    def host; end
+
+    # Sets the url host
+    sig { params(arg0: String).returns(String) }
+    def host=(arg0); end
+
+    # Defines url base path
+    sig { returns(String) }
+    def base_path; end
+
+    # Sets the base path
+    sig { params(arg0: String).returns(String) }
+    def base_path=(arg0); end
+
+    # Defines API keys used with API Key authentications.
+    #
+    # @return [Hash] key: parameter name, value: parameter value (API key)
+    #
+    # @example parameter name is "api_key", API key is "xxx" (e.g. "api_key=xxx" in query string)
+    #   config.api_key['api_key'] = 'xxx'
+    sig { returns(T::Hash[String, String]) }
+    def api_key; end
+
+    # Sets the api_key
+    sig { params(arg0: T::Hash[String, String]).returns(T::Hash[String, String]) }
+    def api_key=(arg0); end
+
+    # Defines API key prefixes used with API Key authentications.
+    #
+    # @return [Hash] key: parameter name, value: API key prefix
+    #
+    # @example parameter name is "Authorization", API key prefix is "Token" (e.g. "Authorization: Token xxx" in headers)
+    #   config.api_key_prefix['api_key'] = 'Token'
+    sig { returns(T::Hash[String, String]) }
+    def api_key_prefix; end
+
+    # Sets the api_key_prefix
+    sig { params(arg0: T::Hash[String, String]).returns(T::Hash[String, String]) }
+    def api_key_prefix=(arg0); end
+
+    # Defines the username used with HTTP basic authentication.
+    #
+    # @return [String]
+    sig { returns(String) }
+    def username; end
+
+    sig { params(arg0: String).returns(String) }
+    def username=(arg0); end
+
+
+    # Defines the password used with HTTP basic authentication.
+    #
+    # @return [String]
+    sig { returns(String) }
+    def password; end
+
+    sig { params(arg0: String).returns(String) }
+    def password=(arg0); end
+
+    # Defines the access token (Bearer) used with OAuth2.
+    sig { returns(String) }
+    def access_token; end
+
+    sig { params(arg0: String).returns(String) }
+    def access_token=(arg0); end
+
+    # Set this to enable/disable debugging. When enabled (set to true), HTTP request/response
+    # details will be logged with `logger.debug` (see the `logger` attribute).
+    # Default to false.
+    #
+    # @return [true, false]
+    sig { returns(T::Boolean) }
+    def debugging; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def debugging=(arg0); end
+
+    # Defines the logger used for debugging.
+    # Default to `Rails.logger` (when in Rails) or logging to STDOUT.
+    #
+    # @return [#debug]
+    def logger; end
+
+    def logger=(arg0); end
+
+    # Defines the temporary folder to store downloaded files
+    # (for API endpoints that have file response).
+    # Default to use `Tempfile`.
+    #
+    # @return [String]
+    sig { returns(String) }
+    def temp_folder_path; end
+
+    sig { params(arg0: String).returns(String) }
+    def temp_folder_path=(arg0); end
+
+    # The time limit for HTTP request in seconds.
+    # Default to 0 (never times out).
+    sig { returns(Integer) }
+    def timeout; end
+
+    sig { params(arg0: Integer).returns(Integer) }
+    def timeout=(arg0); end
+
+    # Set this to false to skip client side validation in the operation.
+    # Default to true.
+    # @return [true, false]
+    sig { returns(T::Boolean) }
+    def client_side_validation; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def client_side_validation=(arg0); end
+
+    ### TLS/SSL setting
+    # Set this to false to skip verifying SSL certificate when calling API from https server.
+    # Default to true.
+    #
+    # @note Do NOT set it to false in production code, otherwise you would face multiple types of cryptographic attacks.
+    #
+    # @return [true, false]
+    sig { returns(T::Boolean) }
+    def verify_ssl; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def verify_ssl=(arg0); end
+
+    ### TLS/SSL setting
+    # Set this to false to skip verifying SSL host name
+    # Default to true.
+    #
+    # @note Do NOT set it to false in production code, otherwise you would face multiple types of cryptographic attacks.
+    #
+    # @return [true, false]
+    sig { returns(T::Boolean) }
+    def verify_ssl_host; end
+
+    sig { params(arg0: T::Boolean).returns(T::Boolean) }
+    def verify_ssl_host=(arg0); end
+
+    ### TLS/SSL setting
+    # Set this to customize the certificate file to verify the peer.
+    #
+    # @return [String] the path to the certificate file
+    #
+    # @see The `cainfo` option of Typhoeus, `--cert` option of libcurl. Related source code:
+    # https://github.com/typhoeus/typhoeus/blob/master/lib/typhoeus/easy_factory.rb#L145
+    sig { returns(String) }
+    def ssl_ca_cert; end
+
+    sig { params(arg0: String).returns(String) }
+    def ssl_ca_cert=(arg0); end
+
+    ### TLS/SSL setting
+    # Client certificate file (for client certificate)
+    def cert_file; end
+
+    def cert_file=(arg0); end
+
+    ### TLS/SSL setting
+    # Client private key file (for client certificate)
+    def key_file; end
+
+    def key_file=(arg0); end
+
+    # Set this to customize parameters encoding of array parameter with multi collectionFormat.
+    # Default to nil.
+    #
+    # @see The params_encoding option of Ethon. Related source code:
+    # https://github.com/typhoeus/ethon/blob/master/lib/ethon/easy/queryable.rb#L96
+    def params_encoding; end
+
+    def params_encoding=(arg0); end
+
+    def inject_format; end
+
+    def inject_format=(arg0); end
+
+    def force_ending_format; end
+
+    def force_ending_format=(arg0); end
+
+    sig { void }
+    def initialize; end
+
+    # The default Configuration object.
+    def self.default; end
+
+    def configure; end
+
+    def scheme=(scheme); end
+
+    def host=(host); end
+
+    def base_path=(base_path); end
+
+    def base_url; end
+
+    # Gets API key (with prefix if set).
+    # @param [String] param_name the parameter name of API key auth
+    def api_key_with_prefix(param_name); end
+
+    # Gets Basic Auth token string
+    def basic_auth_token; end
+
+    # Returns Auth Settings hash for api client.
+    def auth_settings; end
+  end
+end
