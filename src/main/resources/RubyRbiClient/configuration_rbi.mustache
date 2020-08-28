@@ -201,104 +201,38 @@ module {{moduleName}}
 
     sig { void }
     def initialize
-      @scheme = '{{scheme}}'
-      @host = '{{host}}'
-      @base_path = '{{contextPath}}'
-      @api_key = {}
-      @api_key_prefix = {}
-      @timeout = 0
-      @client_side_validation = true
-      @verify_ssl = true
-      @verify_ssl_host = true
-      @params_encoding = nil
-      @cert_file = nil
-      @key_file = nil
-      @debugging = false
-      @inject_format = false
-      @force_ending_format = false
-      @logger = defined?(Rails) ? Rails.logger : Logger.new(STDOUT)
-
-      yield(self) if block_given?
     end
 
     # The default Configuration object.
     def self.default
-      @@default ||= Configuration.new
     end
 
     def configure
-      yield(self) if block_given?
     end
 
     def scheme=(scheme)
-      # remove :// from scheme
-      @scheme = scheme.sub(/:\/\//, '')
     end
 
     def host=(host)
-      # remove http(s):// and anything after a slash
-      @host = host.sub(/https?:\/\//, '').split('/').first
     end
 
     def base_path=(base_path)
-      # Add leading and trailing slashes to base_path
-      @base_path = "/#{base_path}".gsub(/\/+/, '/')
-      @base_path = '' if @base_path == '/'
     end
 
     def base_url
-      url = "#{scheme}://#{[host, base_path].join('/').gsub(/\/+/, '/')}".sub(/\/+\z/, '')
-      URI.encode(url)
     end
 
     # Gets API key (with prefix if set).
     # @param [String] param_name the parameter name of API key auth
     def api_key_with_prefix(param_name)
-      if @api_key_prefix[param_name]
-        "#{@api_key_prefix[param_name]} #{@api_key[param_name]}"
-      else
-        @api_key[param_name]
-      end
     end
 
     # Gets Basic Auth token string
     def basic_auth_token
-      'Basic ' + ["#{username}:#{password}"].pack('m').delete("\r\n")
     end
 
     # Returns Auth Settings hash for api client.
     def auth_settings
-      {
-{{#authMethods}}
-{{#isApiKey}}
-        '{{name}}' =>
-          {
-            type: 'api_key',
-            in: {{#isKeyInHeader}}'header'{{/isKeyInHeader}}{{#isKeyInQuery}}'query'{{/isKeyInQuery}},
-            key: '{{keyParamName}}',
-            value: api_key_with_prefix('{{keyParamName}}')
-          },
-{{/isApiKey}}
-{{#isBasic}}
-        '{{name}}' =>
-          {
-            type: 'basic',
-            in: 'header',
-            key: 'Authorization',
-            value: basic_auth_token
-          },
-{{/isBasic}}
-{{#isOAuth}}
-        '{{name}}' =>
-          {
-            type: 'oauth2',
-            in: 'header',
-            key: 'Authorization',
-            value: "Bearer #{access_token}"
-          },
-{{/isOAuth}}
-{{/authMethods}}
-      }
     end
   end
 end
