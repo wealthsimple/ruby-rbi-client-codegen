@@ -50,6 +50,7 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
   public void processOpts() {
     super.processOpts();
 
+    supportingFiles.add(new SupportingFile("api_client_rbi.mustache", rbiFolder, "api_client.rbi"));
     supportingFiles.add(new SupportingFile("api_error_rbi.mustache", rbiFolder, "api_error.rbi"));
     supportingFiles.add(new SupportingFile("configuration_rbi.mustache", rbiFolder, "configuration.rbi"));
   }
