@@ -1,0 +1,11 @@
+  class {{classname}}
+    {{#allowableValues}}{{#enumVars}}
+    {{{name}}} = T.let({{{value}}}.freeze, String){{/enumVars}}{{/allowableValues}}
+
+    # Builds the enum from string
+    # @param [String] The enum value in the form of the string
+    # @return [String] The enum value
+    sig { params(value: String).returns(String) }
+    def build_from_hash(value); end
+  end
+  
