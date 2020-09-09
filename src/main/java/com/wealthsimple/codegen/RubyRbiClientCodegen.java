@@ -42,6 +42,7 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
 
     supportingFiles.add(new SupportingFile("api_error_rbi.mustache", rbiFolder, "api_error.rbi"));
     supportingFiles.add(new SupportingFile("configuration_rbi.mustache", rbiFolder, "configuration.rbi"));
+    supportingFiles.add(new SupportingFile("version_rbi.mustache", rbiFolder, "version.rbi"));
   }
 
   public String rbiClientFileFolder() {
