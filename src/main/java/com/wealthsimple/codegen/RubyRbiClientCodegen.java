@@ -6,6 +6,7 @@ import io.swagger.codegen.CodegenModelType;
 import io.swagger.codegen.CodegenOperation;
 import io.swagger.codegen.CodegenParameter;
 import io.swagger.codegen.CodegenProperty;
+import io.swagger.codegen.CodegenResponse;
 import io.swagger.codegen.SupportingFile;
 import io.swagger.models.Model;
 import io.swagger.models.Operation;
@@ -16,9 +17,10 @@ import io.swagger.models.properties.*;
 import java.util.*;
 import java.io.File;
 
-import com.wealthsimple.codegen.RbiCodegenProperty;
-import com.wealthsimple.codegen.RbiCodegenParameter;
 import com.wealthsimple.codegen.RbiCodegenOperation;
+import com.wealthsimple.codegen.RbiCodegenParameter;
+import com.wealthsimple.codegen.RbiCodegenProperty;
+import com.wealthsimple.codegen.RbiCodegenResponse;
 
 public class RubyRbiClientCodegen extends RubyClientCodegen {
   protected String rbiFolder = "rbi";
@@ -33,6 +35,7 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
     CodegenModelFactory.setTypeMapping(CodegenModelType.PROPERTY, RbiCodegenProperty.class);
     CodegenModelFactory.setTypeMapping(CodegenModelType.PARAMETER, RbiCodegenParameter.class);
     CodegenModelFactory.setTypeMapping(CodegenModelType.OPERATION, RbiCodegenOperation.class);
+    CodegenModelFactory.setTypeMapping(CodegenModelType.RESPONSE, RbiCodegenResponse.class);
   }
 
   /**
@@ -116,56 +119,32 @@ public class RubyRbiClientCodegen extends RubyClientCodegen {
   @Override
   public CodegenProperty fromProperty(String name, Property p) {
     RbiCodegenProperty property = (RbiCodegenProperty) super.fromProperty(name, p);
-    property.rbiDataType = getRbiTypeDeclaration(p);
+    // the codegen property doesn't have the info about the module name
+    // we need to make sure that we pass it down to the properties and all
+    // the nested items for properties that correspond to containers
+    property.internalClassPrefix = moduleName;
+    RbiCodegenProperty items = (RbiCodegenProperty) property.items;
+    while (items != null) {
+      items.internalClassPrefix = moduleName;
+      items = (RbiCodegenProperty) items.items;
+    }
 
     return property;
   }
 
   @Override
-  public CodegenOperation fromOperation(String path, String httpMethod, Operation operation, Map<String, Model> definitions, Swagger swagger) {
-    RbiCodegenOperation op = (RbiCodegenOperation) super.fromOperation(path, httpMethod, operation, definitions, swagger);
-    if (operation.getResponses() != null && !operation.getResponses().isEmpty()) {
-      Response methodResponse = findMethodResponse(operation.getResponses());
+  public CodegenResponse fromResponse(String responseCode, Response response) {
+    RbiCodegenResponse codegenResponse = (RbiCodegenResponse) super.fromResponse(responseCode, response);
 
-      if (methodResponse != null) {
-        final Property responseProperty = methodResponse.getSchema();
-        if (responseProperty != null) {
-          op.rbiReturnType = getRbiTypeDeclaration(responseProperty);
-        }
-      }
+    if (response.getSchema() != null) {
+      codegenResponse.responseProperty = (RbiCodegenProperty) fromProperty("response", response.getSchema());
     }
-
-    return op;
+    return codegenResponse;
   }
 
   @Override
   public void postProcessParameter(CodegenParameter parameter) {
-    if (parameter instanceof RbiCodegenParameter) {
-      RbiCodegenParameter castedParameter = (RbiCodegenParameter) parameter;
-      if (castedParameter.isString || castedParameter.isBinary || castedParameter.isByteArray || castedParameter.isUuid) {
-        castedParameter.rbiDataType = "String";
-      } else if (castedParameter.isInteger || castedParameter.isLong) {
-        castedParameter.rbiDataType = "Integer";
-      } else if (castedParameter.isFloat || castedParameter.isDouble || castedParameter.isNumber) {
-        castedParameter.rbiDataType = "Float";
-      } else if (castedParameter.isDate) {
-        castedParameter.rbiDataType = "Date";
-      } else if (castedParameter.isDateTime) {
-        castedParameter.rbiDataType = "DateTime";
-      } else if (castedParameter.isBoolean) {
-        castedParameter.rbiDataType = "T::Boolean";
-      } else if (castedParameter.isFile) {
-        castedParameter.rbiDataType = "File";
-      } else if (castedParameter.isContainer) {
-        castedParameter.rbiDataType = ((RbiCodegenProperty)castedParameter.items).rbiDataType;
-      } else {
-        StringBuilder sb = new StringBuilder("");
-        if (!castedParameter.isPrimitiveType) {
-          sb.append(moduleName + "::");
-        }
-        sb.append(castedParameter.dataType);
-        castedParameter.rbiDataType = sb.toString();
-      }
-    }
+    RbiCodegenParameter castedParameter = (RbiCodegenParameter) parameter;
+    castedParameter.internalClassPrefix = moduleName;
   }
 }
