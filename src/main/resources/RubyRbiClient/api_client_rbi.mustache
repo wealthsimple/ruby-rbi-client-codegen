@@ -1,0 +1,154 @@
+# typed: strong
+
+=begin
+{{> api_info}}
+=end
+
+module {{moduleName}}
+  class ApiClient
+    # The Configuration object holding settings to be used in the API client.
+    sig { returns({{moduleName}}::Configuration) }
+    def config; end
+
+    # The Configuration object holding settings to be used in the API client.
+    sig { params(arg0: {{moduleName}}::Configuration).returns({{moduleName}}::Configuration) }
+    def confg=(arg0); end
+
+    # Defines the headers to be used in HTTP requests of all API calls by default.
+    #
+    # @return [Hash]
+    sig { returns(T::Hash[Symbol, T.untyped]) }
+    def default_headers; end
+
+    # Defines the headers to be used in HTTP requests of all API calls by default.
+    #
+    # @return [Hash]
+    sig { params(arg0: T::Hash[Symbol, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
+    def default_headers=(arg0); end
+
+    # Initializes the ApiClient
+    # @option config [Configuration] Configuration for initializing the object, default to Configuration.default
+    sig { params(config: {{moduleName}}::Configuration).void }
+    def initialize(config = {{moduleName}}::Configuration.default); end
+
+    sig { returns(T.self_type) }
+    def self.default; end
+
+    # Call an API with given options.
+    #
+    # @return [Array<(Object, Fixnum, Hash)>] an array of 3 elements:
+    #   the data deserialized from response body (could be nil), response status code and response headers.
+    sig { params(http_method: String, path: String, opts: T::Hash[Symbol, T.untyped]).returns([T.nilable(BasicObject), Integer, T::Hash[Symbol, T.untyped]]) }
+    def call_api(http_method, path, opts = {}); end
+
+    # Builds the HTTP request
+    #
+    # @param [String] http_method HTTP method/verb (e.g. POST)
+    # @param [String] path URL path (e.g. /account/new)
+    # @option opts [Hash] :header_params Header parameters
+    # @option opts [Hash] :query_params Query parameters
+    # @option opts [Hash] :form_params Query parameters
+    # @option opts [Object] :body HTTP body (JSON/XML)
+    # @return [Typhoeus::Request] A Typhoeus Request
+    sig { params(http_method: String, path: String, opts: T::Hash[Symbol, T.untyped]).returns(Typhoeus::Request) }
+    def build_request(http_method, path, opts = {}); end
+
+    # Check if the given MIME is a JSON MIME.
+    # JSON MIME examples:
+    #   application/json
+    #   application/json; charset=UTF8
+    #   APPLICATION/JSON
+    #   */*
+    # @param [String] mime MIME
+    # @return [Boolean] True if the MIME is application/json
+    sig { params(mime: String).returns(T::Boolean) }
+    def json_mime?(mime); end
+
+    # Deserialize the response to the given return type.
+    #
+    # @param [Response] response HTTP response
+    # @param [String] return_type some examples: "User", "Array[User]", "Hash[String,Integer]"
+    sig { params(response: Typhoeus::Response, return_type: String).returns(T.nilable(BasicObject)) }
+    def deserialize(response, return_type); end
+
+    # Convert data to the given return type.
+    # @param [Object] data Data to be converted
+    # @param [String] return_type Return type
+    # @return [Mixed] Data in a particular type
+    sig { params(data: BasicObject, return_type: String).returns(T.nilable(BasicObject)) }
+    def convert_to_type(data, return_type); end
+
+    # Save response body into a file in (the defined) temporary folder, using the filename
+    # from the "Content-Disposition" header if provided, otherwise a random filename.
+    # The response body is written to the file in chunks in order to handle files which
+    # size is larger than maximum Ruby String or even larger than the maximum memory a Ruby
+    # process can use.
+    #
+    # @see Configuration#temp_folder_path
+    sig { params(request: Typhoeus::Request).void }
+    def download_file(request); end
+
+    # Sanitize filename by removing path.
+    # e.g. ../../sun.gif becomes sun.gif
+    #
+    # @param [String] filename the filename to be sanitized
+    # @return [String] the sanitized filename
+    sig { params(filename: String).returns(String) }
+    def sanitize_filename(filename); end
+
+    sig { params(path: String).returns(String) }
+    def build_request_url(path); end
+
+    # Builds the HTTP request body
+    #
+    # @param [Hash] header_params Header parameters
+    # @param [Hash] form_params Query parameters
+    # @param [Object] body HTTP body (JSON/XML)
+    # @return [String] HTTP body data in the form of string
+    sig { params(header_params: T::Hash[String, T.untyped], form_params: T::Hash[String, BasicObject], body: BasicObject).returns(String) }
+    def build_request_body(header_params, form_params, body); end
+
+    # Update hearder and query params based on authentication settings.
+    #
+    # @param [Hash] header_params Header parameters
+    # @param [Hash] query_params Query parameters
+    # @param [String] auth_names Authentication scheme name
+    sig { params(header_params: T::Hash[T.any(Symbol, String), T.untyped], query_params: T::Hash[T.any(Symbol, String), T.untyped], auth_names: String).void }
+    def update_params_for_auth!(header_params, query_params, auth_names); end
+
+    # Sets user agent in HTTP header
+    #
+    # @param [String] user_agent User agent (e.g. swagger-codegen/ruby/1.0.0)
+    sig { params(user_agent: String).returns(String) }
+    def user_agent=(user_agent); end
+
+    # Return Accept header based on an array of accepts provided.
+    # @param [Array] accepts array for Accept
+    # @return [String] the Accept header (e.g. application/json)
+    sig { params(accepts: T.nilable(T::Array[String])).returns(String) }
+    def select_header_accept(accepts); end
+
+    # Return Content-Type header based on an array of content types provided.
+    # @param [Array] content_types array for Content-Type
+    # @return [String] the Content-Type header  (e.g. application/json)
+    sig { params(content_types: T.nilable(T::Array[String])).returns(String) }
+    def select_header_content_type(content_types); end
+
+    # Convert object (array, hash, object, etc) to JSON string.
+    # @param [Object] model object to be converted into JSON string
+    # @return [String] JSON string representation of the object
+    sig { params(model: BasicObject).returns(String) }
+    def object_to_http_body(model); end
+
+    # Convert object(non-array) to hash.
+    # @param [Object] obj object to be converted into JSON string
+    # @return [String] JSON string representation of the object
+    sig { params(obj: BasicObject).returns(String) }
+    def object_to_hash(obj); end
+
+    # Build parameter value according to the given collection format.
+    # @param [String] collection_format one of :csv, :ssv, :tsv, :pipes and :multi
+    sig { params(param: T::Array[String], collection_format: String).returns(String) }
+    def build_collection_param(param, collection_format); end
+  end
+end

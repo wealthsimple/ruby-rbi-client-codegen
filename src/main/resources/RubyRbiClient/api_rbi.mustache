@@ -6,6 +6,60 @@
 module {{moduleName}}
 {{#operations}}
   class {{classname}}
+    sig { returns(T.untyped) }
+    def api_client; end
+
+    sig { params(arg0: T.untyped).returns(T.untyped) }
+    def api_client=(arg0); end
+
+    sig { void }
+    def initialize(); end
+
+{{#operation}}
+    {{#summary}}
+    # {{{summary}}}
+    {{/summary}}
+    {{#notes}}
+    # {{{notes}}}
+    {{/notes}}
+{{#allParams}}{{#required}}    # @param {{paramName}} {{description}}
+{{/required}}{{/allParams}}    # @param [Hash] opts the optional parameters
+{{#allParams}}{{^required}}    # @option opts [{{{dataType}}}] :{{paramName}} {{description}}{{#defaultValue}} (default to {{{.}}}){{/defaultValue}}
+{{/required}}{{/allParams}}    # @return [{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}]
+    sig do
+      params(
+      {{#allParams}}
+      {{#required}}
+        {{paramName}}: {{rbiDataType}},
+      {{/required}}
+      {{/allParams}}
+        opts: T::Hash[Symbol, T.untyped]
+      {{#returnType}}).returns({{{rbiReturnType}}}){{/returnType}}{{^returnType}}).void{{/returnType}}
+    end
+    def {{operationId}}({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}opts = {}); end
+
+    {{#summary}}
+    # {{summary}}
+    {{/summary}}
+    {{#notes}}
+    # {{notes}}
+    {{/notes}}
+{{#allParams}}{{#required}}    # @param {{paramName}} {{description}}
+{{/required}}{{/allParams}}    # @param [Hash] opts the optional parameters
+{{#allParams}}{{^required}}    # @option opts [{{{dataType}}}] :{{paramName}} {{description}}
+{{/required}}{{/allParams}}    # @return [Array<({{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}nil{{/returnType}}, Fixnum, Hash)>] {{#returnType}}{{{returnType}}} data{{/returnType}}{{^returnType}}nil{{/returnType}}, response status code and response headers
+    sig do
+      params(
+      {{#allParams}}
+      {{#required}}
+        {{paramName}}: {{rbiDataType}},
+      {{/required}}
+      {{/allParams}}
+        opts: T::Hash[Symbol, T.untyped]
+      ).returns([{{#returnType}}{{{rbiReturnType}}}{{/returnType}}{{^returnType}}NilClass{{/returnType}}, Integer, T::Hash[T.any(Symbol, String), T.untyped]])
+    end
+    def {{operationId}}_with_http_info({{#allParams}}{{#required}}{{paramName}}, {{/required}}{{/allParams}}opts = {}); end
+{{/operation}}
   end
 {{/operations}}
 end
