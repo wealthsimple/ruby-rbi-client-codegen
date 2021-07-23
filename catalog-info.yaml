@@ -1,0 +1,11 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ruby-rbi-client-codegen
+  description: Swagger Codegen module for Ruby clients with RBI
+  tags:
+    - html
+spec:
+  type: library
+  lifecycle: production
